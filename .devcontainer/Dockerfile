@@ -19,7 +19,8 @@ WORKDIR /home/devuser
 
 # Cấu hình MySQL
 USER root
-COPY ./mysql-custom.cnf /etc/mysql/conf.d/custom.cnf
+RUN echo "[client]\\nport=3306\\nsocket=/var/run/mysqld/mysqld.sock\\n\\n[mysqld]\\nuser=mysql\\nport=3306\\ndatadir=/var/lib/mysql\\nsocket=/var/run/mysqld/mysqld.sock" > /etc/my.cnf
+
 
 
 # Sửa quyền thư mục socket
