@@ -37,9 +37,9 @@ sudo chown mysql:mysql /var/run/mysqld/
 ```
 
 
-một số bị bugs, đã fix lại hàm thêm sách
+một số hàm chính bị bugs, đã fix lại hàm thêm movie
 
 đề xuất cải tiến:
-thêm khả năng thay đổi giá trị cho các biến khi cần  --> dùng các design pattern và nguyên lí SOLID
+thêm khả năng thay đổi giá trị cho các biến khi cần để bảo trì vả mở rộng  --> dùng các design pattern và nguyên lí SOLID
 dùng vòng lặp để thoát an toàn --> cấu trúc lại chương trình
 try catch
