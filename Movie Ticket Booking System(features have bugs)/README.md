@@ -14,9 +14,7 @@ $ sudo su
 ```
 - Tìm file cấu hình
 ```Bash
-$ sudo mkdir -p /var/run/mysql
-$ sudo chown mysql:mysql /var/run/mysql
-$ cd /var/run/mysql
+$ cd /var/lib/mysql
 $ ls -l
 $ find / -name mysql.sock
 ```
@@ -45,22 +43,19 @@ socket=/var/run/mysqld/mysqld.sock
 3) Ecs 
 4) Nhập :wq
 
-- Restart:
+- Cấp quyền 
 ```Bash
 $ sudo chmod 755 /var/run/mysqld/  
 $ sudo chown mysql:mysql /var/run/mysqld/ 
 $ sudo service mysql restart
 $ ls -l /var/run/mysqld/ 
 ```
-
+- Nếu hiện ra các file mysql.sock thì đã xong có thể đóng terminal tại đây
 ## 3) Đã có thể Truy cập Mysql:  
-- Chuyển qua `$ sudo su` để có quyền admin connect vào MySQL và chạy chương trình -mặc định không có password (cứ nhấn Enter khi hỏi).  
-- Hoặc nếu không muốn dùng root user cấu hình thêm:
-```Bash
-$ sudo chmod 755 /var/run/mysqld/  
-$ sudo chown mysql:mysql /var/run/mysqld/  
-$ sudo service mysql restart
-```
+- Mặc định không có password (cứ nhấn Enter khi hỏi)
+- Chuyển qua `$ sudo su` để có toàn quyền admin connect vào MySQL và chạy chương trình. (chỉ cần `$ mysql`)
+- Hoặc chạy bằng `$ sudo mysql -u root -p` nếu không muốn chuyển qua
+- Hoặc phải cấu hình user và password thêm
 
 Link tham khảo:  
 https://helpdesk.inet.vn/knowledgebase/loi-cant-connect-to-local-msql-server-through-socket-varlibmysqlmysqlsock
