@@ -1,7 +1,7 @@
 {
   "name": "MySQL C++ Dev",
   "build": {
-    "dockerfile": "Dockerfile"
+    "dockerfile": "Dockerfile.mysql_dev"
   },
   "settings": {
     "terminal.integrated.defaultProfile.linux": "bash"
