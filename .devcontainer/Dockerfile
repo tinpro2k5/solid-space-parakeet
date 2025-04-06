@@ -1,40 +1,18 @@
-FROM ubuntu:22.04
+FROM mcr.microsoft.com/devcontainers/cpp:1-ubuntu-22.04
 
-# Cập nhật và cài đặt các gói cơ bản
-RUN apt-get update && \
-    DEBIAN_FRONTEND=noninteractive apt-get install -y \
-    build-essential \
-    git \
-    curl \
-    vim \
-    sudo \
-    npm \
-    mysql-server \
-    libmysqlclient-dev && \
-    apt-get clean && rm -rf /var/lib/apt/lists/*
+ARG REINSTALL_CMAKE_VERSION_FROM_SOURCE="none"
 
-# Tạo user để không chạy bằng root
-RUN useradd -m devuser && echo "devuser ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
+# Optionally install the cmake for vcpkg
+COPY ./reinstall-cmake.sh /tmp/
 
+RUN if [ "${REINSTALL_CMAKE_VERSION_FROM_SOURCE}" != "none" ]; then \
+        chmod +x /tmp/reinstall-cmake.sh && /tmp/reinstall-cmake.sh ${REINSTALL_CMAKE_VERSION_FROM_SOURCE}; \
+    fi \
+    && rm -f /tmp/reinstall-cmake.sh
 
-USER devuser
-WORKDIR /home/devuser
+# [Optional] Uncomment this section to install additional vcpkg ports.
+# RUN su vscode -c "${VCPKG_ROOT}/vcpkg install <your-port-name-here>"
 
-
-# Cấu hình MySQL
-USER root
-RUN echo "[client]\\nport=3306\\nsocket=/var/run/mysqld/mysqld.sock\\n\\n[mysqld]\\nuser=mysql\\nport=3306\\ndatadir=/var/lib/mysql\\nsocket=/var/run/mysqld/mysqld.sock" > /etc/my.cnf
-
-
-
-# Sửa quyền thư mục socket
-RUN mkdir -p /var/run/mysqld && \
-chmod 755 /var/run/mysqld && \
-chown mysql:mysql /var/run/mysqld
-
-USER devuser
-# Expose cổng mysql
-EXPOSE 3306
-
-# Khởi động MySQL khi container start
-CMD ["bash", "-c", "service mysql start && bash"]
+# [Optional] Uncomment this section to install additional packages.
+# RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
+#     && apt-get -y install --no-install-recommends <your-package-list-here>
