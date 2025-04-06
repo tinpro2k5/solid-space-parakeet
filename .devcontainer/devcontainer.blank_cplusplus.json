@@ -3,7 +3,7 @@
 {
 	"name": "C++",
 	"build": {
-		"dockerfile": "Dockerfile"
+		"dockerfile": "Dockerfile.blank_cplusplus"
 	}
 
 	// Features to add to the dev container. More info: https://containers.dev/features.
