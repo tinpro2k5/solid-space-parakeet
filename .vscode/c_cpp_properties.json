@@ -1,0 +1,23 @@
+{
+    "configurations": [
+        {
+            "name": "Linux",
+            "includePath": [
+                "/usr/include/mysql",    // Đảm bảo đường dẫn này có mysql.h
+                "${workspaceFolder}/**"  // Thư mục dự án của bạn
+            ],
+            "defines": [],
+            "compilerPath": "/usr/bin/g++", // Trình biên dịch bạn đang sử dụng (g++)
+            "intelliSenseMode": "linux-gcc-x64", // Cấu hình IntelliSense cho hệ điều hành Linux
+            "cStandard": "c11",  // Chuẩn C
+            "cppStandard": "c++17",  // Chuẩn C++
+            "browse": {
+                "path": [
+                    "/usr/include/mysql",  // Đảm bảo thư mục mysql.h nằm trong này
+                    "${workspaceFolder}"
+                ]
+            }
+        }
+    ],
+    "version": 4
+}
