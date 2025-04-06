@@ -1,7 +1,7 @@
 {
   "name": "MySQL C++ Dev",
   "build": {
-    "dockerfile": "Dockerfile.mysql_dev"
+    "dockerfile": "Dockerfile"
   },
   "settings": {
     "terminal.integrated.defaultProfile.linux": "bash"
@@ -13,3 +13,4 @@
   "forwardPorts": [3306],
   "postCreateCommand": "sudo service mysql restart"
 }
+
