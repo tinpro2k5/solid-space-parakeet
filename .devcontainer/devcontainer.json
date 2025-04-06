@@ -1,1 +1,15 @@
-{"image":"mcr.microsoft.com/devcontainers/universal:2"}
+{
+  "name": "MySQL C++ Dev",
+  "build": {
+    "dockerfile": "Dockerfile"
+  },
+  "settings": {
+    "terminal.integrated.defaultProfile.linux": "bash"
+  },
+  "extensions": [
+    "ms-vscode.cpptools",
+    "ms-vscode.cmake-tools"
+  ],
+  "forwardPorts": [3306],
+  "postCreateCommand": "sudo service mysql restart"
+}
