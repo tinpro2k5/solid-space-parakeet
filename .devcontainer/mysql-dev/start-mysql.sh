@@ -1,23 +1,28 @@
 #!/bin/bash
 set -e
 
-# Sửa config để MySQL dễ chạy trong Codespace
-sed -i 's/^bind-address/#bind-address/' /etc/mysql/mysql.conf.d/mysqld.cnf
+# Start mysql as root user
+echo "Switching to root to start MySQL..."
+sudo service mysql stop || true
 
-# Khởi động MySQL
-echo "Starting MySQL..."
-service mysql start
+# Start MySQL in background
+echo "Starting MySQL temporarily..."
+sudo mysqld_safe --skip-networking &
+sleep 5
 
-# Đặt lại password cho root nếu lần đầu
-if [ ! -f /var/lib/mysql/.mysql_password_set ]; then
-  echo "Setting root password..."
-  mysql -u root <<-EOSQL
-    ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 'rootpassword';
-    FLUSH PRIVILEGES;
+# Fix authentication
+echo "Fixing root user authentication..."
+mysql -uroot <<-EOSQL
+  ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 'rootpassword';
+  FLUSH PRIVILEGES;
 EOSQL
-  touch /var/lib/mysql/.mysql_password_set
-fi
 
-# Giữ container sống
-echo "MySQL is running. Container is alive..."
-tail -f /dev/null
+# Shutdown mysql temp
+mysqladmin -uroot -prootpassword shutdown
+
+# Sửa cấu hình để không bind localhost
+sudo sed -i 's/^bind-address/#bind-address/' /etc/mysql/mysql.conf.d/mysqld.cnf
+
+# Start mysql thật
+echo "Starting MySQL server normally..."
+exec sudo mysqld_safe

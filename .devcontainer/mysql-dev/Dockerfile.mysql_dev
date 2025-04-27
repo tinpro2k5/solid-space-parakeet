@@ -17,16 +17,20 @@ RUN apt-get update && \
 RUN useradd -m devuser && echo "devuser ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
 
 # Sửa quyền socket cho mysql
-RUN mkdir -p /var/run/mysqld && \
-    chown mysql:mysql /var/run/mysqld
+RUN mkdir -p /var/run/mysqld && chown mysql:mysql /var/run/mysqld
 
-# Copy script start MySQL
+# Copy script startup
 COPY start-mysql.sh /usr/local/bin/
 RUN chmod +x /usr/local/bin/start-mysql.sh
+
+# Chuyển sang user devuser
+USER devuser
+
+# Làm việc trong home
+WORKDIR /home/devuser
 
 # Expose port
 EXPOSE 3306
 
-# Start MySQL and keep container alive
+# Start script
 CMD ["bash", "/usr/local/bin/start-mysql.sh"]
-USER devuser
