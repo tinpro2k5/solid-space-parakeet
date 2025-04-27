@@ -10,15 +10,15 @@ echo "Starting MySQL temporarily..."
 sudo mysqld_safe --skip-networking &
 sleep 5
 
-# Fix authentication
+# Fix authentication method for root user
 echo "Fixing root user authentication..."
-mysql -uroot <<-EOSQL
+sudo mysql -uroot <<-EOSQL
   ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 'rootpassword';
   FLUSH PRIVILEGES;
 EOSQL
 
-# Shutdown mysql temp
-mysqladmin -uroot -prootpassword shutdown
+# Shutdown MySQL
+sudo mysqladmin -uroot -prootpassword shutdown
 
 # Sửa cấu hình để không bind localhost
 sudo sed -i 's/^bind-address/#bind-address/' /etc/mysql/mysql.conf.d/mysqld.cnf
