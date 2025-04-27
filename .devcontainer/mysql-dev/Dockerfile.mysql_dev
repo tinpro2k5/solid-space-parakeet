@@ -1,6 +1,6 @@
 FROM ubuntu:22.04
 
-# Cài các gói cơ bản
+# Cài đặt các gói cơ bản
 RUN apt-get update && \
     DEBIAN_FRONTEND=noninteractive apt-get install -y \
     build-essential \
@@ -16,21 +16,27 @@ RUN apt-get update && \
 # Tạo user devuser
 RUN useradd -m devuser && echo "devuser ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
 
-# Sửa quyền socket cho mysql
+# Sửa quyền cho thư mục mysql socket
 RUN mkdir -p /var/run/mysqld && chown mysql:mysql /var/run/mysqld
 
-# Copy script startup
+# Copy script khởi động MySQL
 COPY start-mysql.sh /usr/local/bin/
 RUN chmod +x /usr/local/bin/start-mysql.sh
 
-# Chuyển sang user devuser
+# Đổi quyền user
 USER devuser
 
-# Làm việc trong home
-WORKDIR /home/devuser
+# Thực thi MySQL initialization trước khi vào container
+USER root
+RUN service mysql start && \
+    mysql -e "ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 'rootpassword'; FLUSH PRIVILEGES;" && \
+    service mysql stop
 
-# Expose port
+# Trở lại user devuser
+USER devuser
+
+# Expose cổng 3306
 EXPOSE 3306
 
-# Start script
+# Chạy MySQL khi container khởi động
 CMD ["bash", "/usr/local/bin/start-mysql.sh"]
