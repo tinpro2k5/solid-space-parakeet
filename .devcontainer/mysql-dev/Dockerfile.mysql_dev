@@ -29,3 +29,4 @@ EXPOSE 3306
 
 # Start MySQL and keep container alive
 CMD ["bash", "/usr/local/bin/start-mysql.sh"]
+USER devuser
